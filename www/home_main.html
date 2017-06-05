@@ -1,0 +1,401 @@
+<ons-page  ng-controller="MenuController">
+
+<ons-sliding-menu main-page="page1.html" menu-page="home_menu.html" side="left" max-slide-distance="250px" var="menu">
+</ons-sliding-menu>
+
+<ons-template id="page1.html">
+  <ons-page>
+    <ons-toolbar class="title">
+      <div class="left">
+        <ons-toolbar-button ng-click="menu.toggleMenu()">
+          <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em;"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">おもしろ動画</div>
+    </ons-toolbar>
+         
+     <!-- 
+    <div ng-if="catdata.cat_name === '子供'">
+        test
+    </div>
+     -->
+    
+    <div ng-switch = "catdata.cat_name">
+        <div ng-switch-when="(未選択)">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="子供">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kodomo :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="動物">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Doubutu :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="海外">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kaigai :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="アニメ">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Anime :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="ゲーム">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Game :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="漫画">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Manga :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="スポーツ">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Sports :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="ハプニング">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Happening :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="ギャグ">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Gyagu :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="セクシー">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Sexy :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="衝撃">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Shogeki :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="驚き">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Odoroki :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-when="爆笑">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Bakusyou :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+        <div ng-switch-default>
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+        </div>
+    </div>
+    
+    <!-- 
+    <!-- 未選択 
+    <div ng-if="catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- 子供 
+    <div ng-if="catdata.cat_name != '(未選択)' &&  catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑' && catdata.cat_name != ''">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kodomo :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+    </div>
+    <!-- 動物 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Doubutu :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+    </div>
+    <!-- 海外 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- アニメ 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- ゲーム 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' &&  catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- 漫画 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' &&  catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- スポーツ 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' &&  catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- ハプニング 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' &&  catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- ギャグ 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' &&  catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- セクシー 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' &&  catdata.cat_name != '衝撃' && catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- 衝撃 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' &&  catdata.cat_name != '驚き' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- 驚き 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '爆笑'">
+        {{catdata.cat_name}} 
+    </div>
+    <!-- 爆笑 
+    <div ng-if="catdata.cat_name != '(未選択)' && catdata.cat_name != '子供' && catdata.cat_name != '動物' && catdata.cat_name != '海外' && catdata.cat_name != 'アニメ' && catdata.cat_name != 'ゲーム' && catdata.cat_name != '漫画' && catdata.cat_name != 'スポーツ' && catdata.cat_name != 'ハプニング' && catdata.cat_name != 'ギャグ' && catdata.cat_name != 'セクシー' && catdata.cat_name != '衝撃' && catdata.cat_name != '驚き'">
+        {{catdata.cat_name}} 
+    </div>
+     -->
+
+    <!-- 
+    <div>
+    {{catdata.cat_name}}        
+    </div>
+    
+    | filterBy: ['name.first + name.last']: '山田 さくら'
+     -->
+
+　　<!-- 
+    <span ng-if="catdata.cat_name = '子供'">
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kodomo :'1'}" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+    </span>
+
+ -->
+        <!-- 
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+         -->
+
+  <ons-bottom-toolbar modifier="nend">
+    <div id="adg"></div>
+  </ons-bottom-toolbar>   
+  </ons-page>
+</ons-template>
+
+</ons-page>

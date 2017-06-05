@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html nd-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="components/loader.js"></script>
+    <script src="js/ad.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+    
+        var APIKEY = 'ae215a8c3141422b7721bb81b0b8b9e07c0de706492fc682b65d59842fbdf685';
+        var CLIENTKEY = 'b6c5a66443ce2d7484fd45c42df50275278f1071eaf1aeaa5eccd1e543cbeee5';
+ 
+        var ncmb = new NCMB(APIKEY, CLIENTKEY);
+        var tblMvList = ncmb.DataStore("tblMvList");
+        var MvList = new tblMvList();
+    
+        var app = ons.bootstrap("myApp", [])
+          .config(function ($sceDelegateProvider) {
+            $sceDelegateProvider.resourceUrlWhitelist([
+              'self',
+              '"https://www.youtube.com/embed/**'
+            ]);
+          });
+        ons.disableAutoStatusBarFill();
+        ons.ready(function() {
+            makeADGTag(10722, 'adg');
+        });
+        
+        // Homeのコントローラ
+        app.controller('MenuController', function($scope, $http, SharedData,SelectedCat,$timeout) {
+           // $http.get("data.json").then(function(response){
+           //     $scope.dataList = response.data;                
+           // });
+           //$scope.catdata = ""
+           $scope.catdata = [];
+           //catdata = SelectedCat.get();
+           //$scope.catdata = "test"
+            //$timeout(function() {
+            //    $scope.$apply(function () {
+            //        $scope.catdata = SelectedCat.get();
+            //    });
+                   //$scope.catdata = SelectedCat.get();
+            //});
+           var update = function() {
+              $scope.catdata = SelectedCat.get();
+            };
+            update();
+            setInterval(function() {
+              $scope.$apply(update);
+            }, 300);
+           //alert(catdata.cat_name)
+           //↓↓↓-----------------------------------
+            $scope.dataList = [];
+            var getDataCount = 100; // 1回に取得するデータの数
+            var allDataCount; // 登録してあるデータの総数
+            var fetchTimes; // データベースに通信する回数
+            var completedTimes = 0; // 2回目以降で通信完了した回数
+            var appendData = []; // 2回目以降のデータの仮格納場所
+            ////if (catdata.cat_name === undefined){
+            //if (catdata= ""){
+            ////var ct = catdata.cat_name 
+            ////if (typeof ct === "undefined") {
+            ////if(angular.isUndefined(catdata)){
+            //    alert("a")
+            //} else {
+            //    alert(catdata.cat_name)                
+            //}
+            
+            // 1回目のデータ取得
+            tblMvList.order('createDate', true).count().order("createDate", true).limit(getDataCount).fetchAll().then(function(results) {
+                // 1回目分のデータを格納
+                $timeout(function() {
+                    $scope.dataList = results;
+                });
+ 
+                // 2回目以降のデータ取得が必要な場合
+                allDataCount = results.count;
+                if(allDataCount > getDataCount) {
+                    fetchTimes = Math.ceil(allDataCount / getDataCount);
+                    for (var i = 0; i < fetchTimes - 1; i++) {
+                        appendData[i] = [];
+                        getdata(i);
+                    }
+                }
+            }).catch(function(err) {
+                console.log(err);
+            });
+            
+            // 2回目以降のデータ取得
+            function getdata(num) {
+                tblMvList.order('createDate', true).skip((num + 1) * getDataCount).limit(getDataCount).fetchAll().then(function(results) {
+                    // 取得したデータを仮格納場所に保存
+                    appendData[num] = results;
+                    completedTimes++;
+ 
+                    // 2回目以降のデータを全て取得したとき
+                    if(completedTimes == (fetchTimes - 1)) {
+                        // for文内で$timeoutが使えないので一旦データを変数にまとめる
+                        var addArr = [];
+                        for (var i = 0; i < fetchTimes - 1; i++) {
+                            for (var j = 0; j < appendData[i].length; j++) {
+                                addArr.push(appendData[i][j]);
+                            }
+                        }
+                        // 変数にまとめたデータを追加
+                        $timeout(function() {
+                            $scope.items = $scope.items.concat(addArr);
+                        });
+                    }
+                }).catch(function(err) {
+                    console.log(err);
+                });
+            }
+           //↑↑↑-----------------------------------
+           
+            $scope.showDetailPage = function(data){
+                
+                
+                //レコード更新
+                var tblMvLog = ncmb.DataStore("tblMvLog");
+                var MvLog = new tblMvLog();   
+                MvLog.set("name", data.name)
+                .set("d_id",data.d_id)
+                .set("date",{ "__type": "Date", "iso": "YYYY-MM-DDTHH:00:00.0000Z"} )
+                .set("count","1")
+                .save()
+                
+                
+                // 共有サービスにデータを登録
+                SharedData.set(data);
+                
+                //再生画面を表示
+                window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
+                //// play.htmlを表示
+                //myNavigator.pushPage('play.html');
+            }    
+        });
+        
+        
+        // Homeのcategoryコントローラ
+        app.controller('MenuCatController', function($scope, $http, SelectedCat,$timeout) {
+            
+            $http.get("data_cat.json").then(function(response){
+                $scope.dataList = response.data;                
+            });
+            
+            $scope.SetCat = function(data){
+                // 共有サービスにデータを登録
+                SelectedCat.set(data);    
+                //alert(data.cat_name);
+
+            }    
+
+        });
+        
+        
+        // 検索のコントローラ
+        app.controller('SerchController', function($scope, $http, SharedData,SelectedCat,$timeout) {
+            //$http.get("data.json").then(function(response){
+            //    $scope.dataList = response.data;                
+            //});
+           //↓↓↓-----------------------------------
+            $scope.dataList = [];
+            var getDataCount = 100; // 1回に取得するデータの数
+            var allDataCount; // 登録してあるデータの総数
+            var fetchTimes; // データベースに通信する回数
+            var completedTimes = 0; // 2回目以降で通信完了した回数
+            var appendData = []; // 2回目以降のデータの仮格納場所
+            
+            // 1回目のデータ取得
+            tblMvList.order('createDate', true).count().order("createDate", true).limit(getDataCount).fetchAll().then(function(results) {
+                // 1回目分のデータを格納
+                $timeout(function() {
+                    $scope.dataList = results;
+                });
+ 
+                // 2回目以降のデータ取得が必要な場合
+                allDataCount = results.count;
+                if(allDataCount > getDataCount) {
+                    fetchTimes = Math.ceil(allDataCount / getDataCount);
+                    for (var i = 0; i < fetchTimes - 1; i++) {
+                        appendData[i] = [];
+                        getdata(i);
+                    }
+                }
+            }).catch(function(err) {
+                console.log(err);
+            });
+            
+            // 2回目以降のデータ取得
+            function getdata(num) {
+                tblMvList.order('createDate', true).skip((num + 1) * getDataCount).limit(getDataCount).fetchAll().then(function(results) {
+                    // 取得したデータを仮格納場所に保存
+                    appendData[num] = results;
+                    completedTimes++;
+ 
+                    // 2回目以降のデータを全て取得したとき
+                    if(completedTimes == (fetchTimes - 1)) {
+                        // for文内で$timeoutが使えないので一旦データを変数にまとめる
+                        var addArr = [];
+                        for (var i = 0; i < fetchTimes - 1; i++) {
+                            for (var j = 0; j < appendData[i].length; j++) {
+                                addArr.push(appendData[i][j]);
+                            }
+                        }
+                        // 変数にまとめたデータを追加
+                        $timeout(function() {
+                            $scope.items = $scope.items.concat(addArr);
+                        });
+                    }
+                }).catch(function(err) {
+                    console.log(err);
+                });
+            }
+           //↑↑↑-----------------------------------
+            
+            $scope.showDetailPage = function(data){
+                // 共有サービスにデータを登録
+                SharedData.set(data);
+                //alert("https://www.youtube.com/embed/"+data.d_id);
+                
+                window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
+                
+                // play3.htmlを表示
+                //myNavigator3.pushPage('play3.html');
+            }    
+        });
+        
+        // 選択されているカテゴリを共有するサービス
+        app.factory('SelectedCat', function(){
+            var selectedCat = {};
+            selectedCat.data = {};
+                
+            // データを設定
+            selectedCat.set = function(data){
+              selectedCat.data = data;
+            };
+             
+            // データを返す
+            selectedCat.get = function(){
+                return selectedCat.data;
+            };
+            return selectedCat;
+        });
+        
+        // コントローラ間でデータを共有するサービス
+        app.factory('SharedData', function(){
+            var sharedData = {};
+            sharedData.data = {};
+                
+            // データを設定
+            sharedData.set = function(data){
+              sharedData.data = data;
+            };
+             
+            // データを返す
+            sharedData.get = function(){
+                return sharedData.data;
+            };
+            return sharedData;
+        });
+        
+        //動画再生ページのコントローラ
+        app.controller('DetailController', function($scope, $sce, SharedData) {
+            $scope.data = SharedData.get();  
+            $scope.trustSrc = function(src) {
+                return $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + src);
+                //return $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
+            };
+            
+            //$scope.url_t = $sce.trustAsResourceUrl('https://www.angularjs.org');
+            //$scope.changeIt = function () {
+            //    $scope.url_t = $sce.trustAsResourceUrl('https://docs.angularjs.org/tutorial');
+            //}
+            
+            //$scope.projects = {
+            //    1 : {
+            //            "id" : 1,
+            //            "name" : "Mela Sarkar",
+            //            "url" : "http://blabla.com",
+            //            "description" : "A professional portfolio site for McGill University professor Mela Sarkar."
+            //        },
+
+            //    2 : {
+            //            "id" : 2,
+            //            "name" : "Good Watching",
+            //            "url" : "http://goodwatching.com",
+            //            "description" : "Weekend experiment to help my mom decide what to watch."    
+            //        }
+            //};
+            
+            //$scope.setProject = function (id) {
+            //    $scope.currentProject = $scope.projects[id];
+            //    $scope.currentProjectUrl = $sce.trustAsResourceUrl($scope.currentProject.url);
+            //}
+        })
+
+        //動画再生ページのコントローラ
+        app.controller('DetailController2', function($scope, $sce, SharedData) {
+            $scope.projects = {
+                1 : {
+                    "id" : 1,
+                    "name" : "Mela Sarkar",
+                    "url" : "http://blabla.com",
+                    "description" : "A professional portfolio site for McGill University professor Mela Sarkar."
+                },
+                2 : {
+                    "id" : 2,
+                    "name" : "Good Watching",
+                    "url" : "http://goodwatching.com",
+                    "description" : "Weekend experiment to help my mom decide what to watch."    
+                }
+            };
+            $scope.setProject = function (id) {
+                $scope.currentProject = $scope.projects[id];
+                $scope.currentProjectUrl = $sce.trustAsResourceUrl($scope.currentProject.url);
+            }
+        })
+
+
+    </script>
+</head>
+<body>
+
+    <ons-tabbar var="tabbar">
+        <!--
+        <ons-tabbar-item
+            icon="home"
+            label="Home"
+            page="home.html"
+            active="true"></ons-tabbar-item>
+        -->
+        <ons-tabbar-item
+            icon="home"
+            label="Home"
+            page="home_main.html"
+            active="true"></ons-tabbar-item>
+        <!--
+        <ons-tabbar-item
+            icon="search"
+            label="検索"
+            page="navigator3.html"></ons-tabbar-item>
+        -->
+        <ons-tabbar-item
+            icon="comment"
+            label="週間"
+            page="page2.html"></ons-tabbar-item>
+        <ons-tabbar-item
+            icon="comment"
+            label="月間"
+            page="page4.html"></ons-tabbar-item>
+    </ons-tabbar>
+    
+
+</body>
+
+
+</html>

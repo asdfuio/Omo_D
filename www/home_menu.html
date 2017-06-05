@@ -1,0 +1,70 @@
+<ons-page ng-controller="MenuCatController">
+
+  <ons-list>
+    <ons-list-item>
+      カテゴリ選択
+    </ons-list-item>
+
+    <ons-list-item class="item" ng-repeat="data in dataList" modifier="chevron" ng-click="SetCat(data);menu.setMainPage('page1.html', {closeMenu: true});'home_main.html';">
+        <span class="list__item__subtitle">{{data.cat_name}}</span>
+    </ons-list-item>
+
+    <!-- 
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　(未選択)
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　子供
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　動物
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　海外
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　アニメ
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　ゲーム
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　漫画
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　スポーツ
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　ハプニング
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　ギャグ
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　セクシー
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　衝撃
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　驚き
+    </ons-list-item>
+    <ons-list-item modifier="tappable" class="list__item__line-height"
+                   onclick="app.slidingMenu.closeMenu()">
+      &nbsp;　爆笑
+    </ons-list-item>
+     -->
+</ons-page>

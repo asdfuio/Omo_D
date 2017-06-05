@@ -1,0 +1,30 @@
+<ons-page  ng-controller="SerchController">
+
+<ons-toolbar>
+    <div class="center">検索</div>
+</ons-toolbar>
+
+<div style="text-align: center"> 
+
+        <ons-list>
+            <!-- <ons-list-item  ng-repeat="data in dataList | filter:searchAll"  ng-click="showDetailPage2(data)"> -->
+            <ons-list-item ng-click="showDetailPage(data)"  ng-repeat="data in dataList | filter:searchAll"  >
+            <div class="list__item__left">
+                <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+            </div>            
+                <span class="list__item__subtitle">{{data.name}}</span>
+            </ons-list-item>
+        </ons-list>
+                
+  <ons-bottom-toolbar modifier="nend">
+        <div class="tb-search">
+            <input id="searcharea" type="search" class="search-input" ng-model="searchAll"  placeholder="検索">
+            <div class="tb-clear" ng-click="searchAll = null"><ons-icon icon="times"></ons-icon></div>
+        </div>
+  </ons-bottom-toolbar>  
+
+
+
+</div>
+
+</ons-page>

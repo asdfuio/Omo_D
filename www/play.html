@@ -1,0 +1,58 @@
+<ons-page ng-controller="DetailController">
+
+<ons-toolbar>
+    <div class="left"><ons-back-button>Back</ons-back-button></div>
+    <div class="center">New Page</div>
+</ons-toolbar>
+
+<div style="text-align: center">
+    <br />
+    {{data.name}}
+    <br />
+    <!--<iframe width="300" height="200" src="https://www.youtube.com/embed/{{data.d_id}}?autoplay=1" frameborder="0" autoplay="1" allowfullscreen></iframe>    
+-->
+    
+        <iframe title="YouTube video player"
+                ng-src="{{trustSrc(url)}}"
+                frameborder="0"></iframe>
+</div>
+        <select ng-model="url">
+          <option>{{data.d_id}}</option>
+        </select>
+
+    <!--
+    <ul class="">
+        <li ng-repeat="project in projects">
+            <a ng-click="setProject(project.id)" href="">{{project.url}}</a>
+        </li>
+    </ul>
+
+    <iframe  ng-src="{{trustSrc(currentProject.url)}}">
+        Something wrong...
+    </iframe>
+    -->
+
+<div>
+
+<!--
+
+<div>
+    <button ng-click="changeIt()">Change it</button>
+    <iframe ng-src="{{url_t}}"></iframe>
+</div>
+-->
+
+現状リストを選択しないと動画が再生できない
+iframeタグ内でAnglar式をどうやってつかうか？
+→何かアクションが必要
+※ リスト選ぶときに長めに押さないと選択できない？
+</div>
+
+
+<ons-bottom-toolbar modifier="nend">
+    <div>
+       <div id="adg"></div>
+    </div>
+  </ons-bottom-toolbar>   
+
+</ons-page>

@@ -1,0 +1,30 @@
+<ons-page ng-controller="DetailController2">
+
+<ons-toolbar>
+    <div class="left"><ons-back-button>Back</ons-back-button></div>
+    <div class="center">test Page</div>
+</ons-toolbar>
+
+<div style="text-align: center">
+    <br />
+    {{data.name}}
+    <br />
+    <!--<iframe width="300" height="200" src="https://www.youtube.com/embed/{{data.d_id}}?autoplay=1" frameborder="0" autoplay="1" allowfullscreen></iframe>    
+-->
+<div>
+    <ul class="">
+        <li ng-repeat="project in projects">
+            <a ng-click="setProject(project.id)" href="">{{project.url}}</a>
+        </li>
+    </ul>
+
+    <iframe ng-src="{{currentProjectUrl}}"> <!--content--> </iframe>
+</div>
+
+<ons-bottom-toolbar modifier="nend">
+    <div>
+       <div id="adg"></div>
+    </div>
+  </ons-bottom-toolbar>   
+
+</ons-page>

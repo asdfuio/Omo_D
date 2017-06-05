@@ -1,0 +1,33 @@
+<ons-page  ng-controller="MenuController">
+
+<ons-toolbar>
+    <div class="left">
+        <ons-toolbar-button ng-click="ons.slidingMenu.toggle()">
+            <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+        </ons-toolbar-button>
+        <ons-sliding-menu main-page="pate1.html" menu-page="menu.html" max-slide-distance="260px" type="push" var="menu">
+        </ons-sliding-menu>
+    </div>
+
+    <div class="center">おもしろ動画</div>
+</ons-toolbar>
+
+<div style="text-align: center">
+
+        <ons-list>
+            <ons-list-item  ng-repeat="data in dataList "  ng-click="showDetailPage(data)">
+            <div class="list__item__left">
+                <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+            </div>
+                <span class="list__item__subtitle">{{data.name}}</span>
+            </ons-list-item>
+        </ons-list>
+
+  <ons-bottom-toolbar modifier="nend">
+    <div id="adg"></div>
+  </ons-bottom-toolbar>   
+
+</div>
+
+</ons-page>
+
