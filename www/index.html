@@ -15,6 +15,7 @@
  
         var ncmb = new NCMB(APIKEY, CLIENTKEY);
         var tblMvList = ncmb.DataStore("tblMvList");
+        var tblMvLog = ncmb.DataStore("tblMvLog");
         var MvList = new tblMvList();
     
         var app = ons.bootstrap("myApp", [])
@@ -120,13 +121,28 @@
                 
                 
                 //レコード更新
-                var tblMvLog = ncmb.DataStore("tblMvLog");
-                var MvLog = new tblMvLog();   
-                MvLog.set("name", data.name)
-                .set("d_id",data.d_id)
-                .set("date",{ "__type": "Date", "iso": "YYYY-MM-DDTHH:00:00.0000Z"} )
-                .set("count","1")
-                .save()
+                //var tblMvLog = ncmb.DataStore("tblMvLog");
+                //var MvLog = new tblMvLog();  
+                var jikan= new Date();
+                var jikan_Y = jikan.getFullYear();
+                var jikan_M = jikan.getMonth() + 1;
+                var jikan_D = jikan.getDate();
+                
+                tblMvLog.equalTo("name", data.name)
+                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                    .fetch()
+                    .then(function(results) {
+                        results.setIncrement("count", 1 )
+                        return results.update();})
+                    .catch(function(err){
+                        //alert(err)
+                        var MvLog = new tblMvLog();
+                        MvLog.set("name", data.name)
+                        .set("d_id",data.d_id)
+                        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                        .set("count", 1)
+                        .save()                        
+                    });
                 
                 
                 // 共有サービスにデータを登録
@@ -319,6 +335,165 @@
                 $scope.currentProjectUrl = $sce.trustAsResourceUrl($scope.currentProject.url);
             }
         })
+        
+
+        // 週間ランキングのコントローラ
+        app.controller('WRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
+           $scope.catdata = [];
+           var update = function() {
+              $scope.catdata = SelectedCat.get();
+            };
+            update();
+            setInterval(function() {
+              $scope.$apply(update);
+            }, 300);
+           //↓↓↓-----------------------------------
+            $scope.dataList = [];
+            var getDataCount = 50; // 1回に取得するデータの数
+            var allDataCount; // 登録してあるデータの総数
+            var fetchTimes; // データベースに通信する回数
+            var completedTimes = 0; // 2回目以降で通信完了した回数
+            var appendData = []; // 2回目以降のデータの仮格納場所
+            
+            var jikan2= new Date();
+            var jikan_Y2 = jikan2.getFullYear();
+            var jikan_M2 = jikan2.getMonth() + 1;
+            var jikan_D2 = jikan2.getDate();
+            
+            var jikan_Y3 = jikan2.getFullYear();
+            var jikan_M3 = jikan2.getMonth() + 1;
+            var jikan_D3 = jikan2.getDate() - 7;
+            
+            
+            // データ取得
+            tblMvLog.order('count', true)
+                //.count().order("count", true)
+                .lessThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y2 + "-" + jikan_M2 + "-" + jikan_D2 + "T00:00:00.000Z"} )
+                .greaterThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y3 + "-" + jikan_M3 + "-" + jikan_D3 + "T00:00:00.000Z"} )
+                .limit(getDataCount)
+                .fetchAll()
+                .then(function(results) {
+                    // 1回目分のデータを格納
+                    $timeout(function() {
+                        $scope.dataList = results;
+                    });
+                 }).catch(function(err) {
+                    console.log(err);
+                });
+
+           //↑↑↑-----------------------------------
+           
+            $scope.showDetailPage = function(data){
+                //レコード更新
+                var jikan= new Date();
+                var jikan_Y = jikan.getFullYear();
+                var jikan_M = jikan.getMonth() + 1;
+                var jikan_D = jikan.getDate();
+                
+                tblMvLog.equalTo("name", data.name)
+                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                    .fetch()
+                    .then(function(results) {
+                        results.setIncrement("count", 1 )
+                        return results.update();})
+                    .catch(function(err){
+                        //alert(err)
+                        var MvLog = new tblMvLog();
+                        MvLog.set("name", data.name)
+                        .set("d_id",data.d_id)
+                        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                        .set("count", 1)
+                        .save()                        
+                    });
+//                
+//                
+//                //// 共有サービスにデータを登録
+//                //SharedData.set(data);
+//                
+//                //再生画面を表示
+                window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
+            }    
+        });
+
+        // 月間ランキングのコントローラ
+        app.controller('MRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
+           $scope.catdata = [];
+           var update = function() {
+              $scope.catdata = SelectedCat.get();
+            };
+            update();
+            setInterval(function() {
+              $scope.$apply(update);
+            }, 300);
+           //↓↓↓-----------------------------------
+            $scope.dataList = [];
+            var getDataCount = 50; // 1回に取得するデータの数
+            var allDataCount; // 登録してあるデータの総数
+            var fetchTimes; // データベースに通信する回数
+            var completedTimes = 0; // 2回目以降で通信完了した回数
+            var appendData = []; // 2回目以降のデータの仮格納場所
+            
+            var jikan2= new Date();
+            var jikan_Y2 = jikan2.getFullYear();
+            var jikan_M2 = jikan2.getMonth() + 1;
+            var jikan_D2 = jikan2.getDate();
+            
+            var jikan_Y3 = jikan2.getFullYear();
+            var jikan_M3 = jikan2.getMonth();
+            var jikan_D3 = jikan2.getDate();
+            
+            
+            // データ取得
+            tblMvLog.order('count', true)
+                //.count().order("count", true)
+                .lessThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y2 + "-" + jikan_M2 + "-" + jikan_D2 + "T00:00:00.000Z"} )
+                .greaterThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y3 + "-" + jikan_M3 + "-" + jikan_D3 + "T00:00:00.000Z"} )
+                .limit(getDataCount)
+                .fetchAll()
+                .then(function(results) {
+                    // 1回目分のデータを格納
+                    $timeout(function() {
+                        $scope.dataList = results;
+                    });
+                 }).catch(function(err) {
+                    console.log(err);
+                });
+
+           //↑↑↑-----------------------------------
+           
+            $scope.showDetailPage = function(data){
+                
+                
+                //レコード更新
+                var jikan= new Date();
+                var jikan_Y = jikan.getFullYear();
+                var jikan_M = jikan.getMonth() + 1;
+                var jikan_D = jikan.getDate();
+                
+                tblMvLog.equalTo("name", data.name)
+                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                    .fetch()
+                    .then(function(results) {
+                        results.setIncrement("count", 1 )
+                        return results.update();})
+                    .catch(function(err){
+                        //alert(err)
+                        var MvLog = new tblMvLog();
+                        MvLog.set("name", data.name)
+                        .set("d_id",data.d_id)
+                        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                        .set("count", 1)
+                        .save()                        
+                    });
+                
+                
+                //// 共有サービスにデータを登録
+                //SharedData.set(data);
+                
+                //再生画面を表示
+                window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
+            }    
+        });
 
 
     </script>
@@ -334,20 +509,24 @@
             active="true"></ons-tabbar-item>
         -->
         <ons-tabbar-item
+            icon="comment"
+            label="週間"
+            page="page2.html"
+            active="true">
+        
+        </ons-tabbar-item>
+
+        <ons-tabbar-item
             icon="home"
-            label="Home"
+            label="カテゴリ"
             page="home_main.html"
-            active="true"></ons-tabbar-item>
+            ></ons-tabbar-item>
         <!--
         <ons-tabbar-item
             icon="search"
             label="検索"
             page="navigator3.html"></ons-tabbar-item>
         -->
-        <ons-tabbar-item
-            icon="comment"
-            label="週間"
-            page="page2.html"></ons-tabbar-item>
         <ons-tabbar-item
             icon="comment"
             label="月間"

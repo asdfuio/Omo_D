@@ -1,49 +1,27 @@
+<ons-page  ng-controller="WRankController">
+
 <ons-toolbar>
-    <div class="center">週間</div>
+    <div class="center">週間ランキング</div>
 </ons-toolbar>
 
 <div style="text-align: center">
 
         <ons-list>
-        
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
+            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-row>
+                <ons-col width="80px">
+                    <div class="item__thum">
+                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                    </div>
+                </ons-col>
+                <ons-col>
+                    <span class="list__item__subtitle">{{data.name}}</span>
+                </ons-col>
+            </ons-row>
             </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-            <ons-list-item  ng-click="myNavigator.pushPage('new_page.html')">
-                test
-            </ons-list-item>
-
         </ons-list>
 
 
 </div>
+
+</ons-page>
