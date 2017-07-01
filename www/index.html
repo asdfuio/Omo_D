@@ -16,6 +16,8 @@
         var ncmb = new NCMB(APIKEY, CLIENTKEY);
         var tblMvList = ncmb.DataStore("tblMvList");
         var tblMvLog = ncmb.DataStore("tblMvLog");
+        var tblRankM = ncmb.DataStore("tblRankM");
+        var tblRankW = ncmb.DataStore("tblRankW");
         var MvList = new tblMvList();
     
         var app = ons.bootstrap("myApp", [])
@@ -128,6 +130,14 @@
                 var jikan_M = jikan.getMonth() + 1;
                 var jikan_D = jikan.getDate();
                 
+                var jikan_Y_RW = jikan.getFullYear();
+                var jikan_M_RW = jikan.getMonth() + 1;
+                var jikan_D_RW = jikan.getDate() % 7 + 1;
+                
+                var jikan_Y_RM = jikan.getFullYear();
+                var jikan_M_RM = jikan.getMonth() + 1;
+                var jikan_D_RM = 1;
+                
                 tblMvLog.equalTo("name", data.name)
                     .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
                     .fetch()
@@ -143,8 +153,39 @@
                         .set("count", 1)
                         .save()                        
                     });
-                
-                
+                    
+                tblRankW.equalTo("name", data.name)
+                    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
+                    .fetch()
+                    .then(function(results) {
+                        results.setIncrement("count", 1 )
+                        return results.update();})
+                    .catch(function(err){
+                        //alert(err)
+                        var MvRnkW = new tblRankW();
+                        MvRnkW.set("name", data.name)
+                        .set("d_id",data.d_id)
+                        .set("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
+                        .set("count", 1)
+                        .save()                        
+                    });
+                    
+                tblRankM.equalTo("name", data.name)
+                    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
+                    .fetch()
+                    .then(function(results) {
+                        results.setIncrement("count", 1 )
+                        return results.update();})
+                    .catch(function(err){
+                        //alert(err)
+                        var MvRnkM = new tblRankM();
+                        MvRnkM.set("name", data.name)
+                        .set("d_id",data.d_id)
+                        .set("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
+                        .set("count", 1)
+                        .save()                        
+                    });
+
                 // 共有サービスにデータを登録
                 SharedData.set(data);
                 
