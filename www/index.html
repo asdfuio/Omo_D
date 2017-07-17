@@ -16,8 +16,8 @@
         var ncmb = new NCMB(APIKEY, CLIENTKEY);
         var tblMvList = ncmb.DataStore("tblMvList");
         var tblMvLog = ncmb.DataStore("tblMvLog");
-        var tblRankM = ncmb.DataStore("tblRankM");
-        var tblRankW = ncmb.DataStore("tblRankW");
+        //var tblRankM = ncmb.DataStore("tblRankM");
+        //var tblRankW = ncmb.DataStore("tblRankW");
         var MvList = new tblMvList();
     
         var app = ons.bootstrap("myApp", [])
@@ -57,7 +57,7 @@
            //alert(catdata.cat_name)
            //↓↓↓-----------------------------------
             $scope.dataList = [];
-            var getDataCount = 100; // 1回に取得するデータの数
+            var getDataCount = 1000; // 1回に取得するデータの数
             var allDataCount; // 登録してあるデータの総数
             var fetchTimes; // データベースに通信する回数
             var completedTimes = 0; // 2回目以降で通信完了した回数
@@ -74,6 +74,15 @@
             
             // 1回目のデータ取得
             tblMvList.order('createDate', true).count().order("createDate", true).limit(getDataCount).fetchAll().then(function(results) {
+                
+                var new_jikan = new Date();
+                new_jikan.setDate(new_jikan.getDate() - 14)
+                angular.forEach(results, function(value,index,ary){
+                    if (Date.parse(value.createDate) > new_jikan ){
+                         value.new = 1
+                    }
+                })
+                    
                 // 1回目分のデータを格納
                 $timeout(function() {
                     $scope.dataList = results;
@@ -138,53 +147,61 @@
                 var jikan_M_RM = jikan.getMonth() + 1;
                 var jikan_D_RM = 1;
                 
-                tblMvLog.equalTo("name", data.name)
-                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
-                    .fetch()
-                    .then(function(results) {
-                        results.setIncrement("count", 1 )
-                        return results.update();})
-                    .catch(function(err){
-                        //alert(err)
-                        var MvLog = new tblMvLog();
-                        MvLog.set("name", data.name)
-                        .set("d_id",data.d_id)
-                        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
-                        .set("count", 1)
-                        .save()                        
-                    });
+                //tblMvLog.equalTo("name", data.name)
+                //    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //    .fetch()
+                //    .then(function(results) {
+                //        results.setIncrement("count", 1 )
+                //        return results.update();})
+                //    .catch(function(err){
+                //        //alert(err)
+                //        var MvLog = new tblMvLog();
+                //        MvLog.set("name", data.name)
+                //        .set("d_id",data.d_id)
+                //        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //        .set("count", 1)
+                //        .set("d_createDate", data.createDate)
+                //        .save()                        
+                //    });
+                var MvLog = new tblMvLog();
+                MvLog.set("name", data.name)
+                .set("d_id",data.d_id)
+                    .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                    .set("count", 1)
+                    .set("d_createDate", data.createDate)
+                    .save()         
                     
-                tblRankW.equalTo("name", data.name)
-                    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
-                    .fetch()
-                    .then(function(results) {
-                        results.setIncrement("count", 1 )
-                        return results.update();})
-                    .catch(function(err){
-                        //alert(err)
-                        var MvRnkW = new tblRankW();
-                        MvRnkW.set("name", data.name)
-                        .set("d_id",data.d_id)
-                        .set("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
-                        .set("count", 1)
-                        .save()                        
-                    });
+                //tblRankW.equalTo("name", data.name)
+                //    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
+                //    .fetch()
+                //    .then(function(results) {
+                //        results.setIncrement("count", 1 )
+                //        return results.update();})
+                //    .catch(function(err){
+                //        //alert(err)
+                //        var MvRnkW = new tblRankW();
+                //        MvRnkW.set("name", data.name)
+                //        .set("d_id",data.d_id)
+                //        .set("date",{"__type": "Date", "iso": jikan_Y_RW + "-" + jikan_M_RW + "-" + jikan_D_RW + "T00:00:00.000Z"} )
+                //        .set("count", 1)
+                //        .save()                        
+                //    });
                     
-                tblRankM.equalTo("name", data.name)
-                    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
-                    .fetch()
-                    .then(function(results) {
-                        results.setIncrement("count", 1 )
-                        return results.update();})
-                    .catch(function(err){
-                        //alert(err)
-                        var MvRnkM = new tblRankM();
-                        MvRnkM.set("name", data.name)
-                        .set("d_id",data.d_id)
-                        .set("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
-                        .set("count", 1)
-                        .save()                        
-                    });
+                //tblRankM.equalTo("name", data.name)
+                //    .equalTo("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
+                //    .fetch()
+                //    .then(function(results) {
+                //        results.setIncrement("count", 1 )
+                //        return results.update();})
+                //    .catch(function(err){
+                //        //alert(err)
+                //        var MvRnkM = new tblRankM();
+                //        MvRnkM.set("name", data.name)
+                //        .set("d_id",data.d_id)
+                //        .set("date",{"__type": "Date", "iso": jikan_Y_RM + "-" + jikan_M_RM + "-" + jikan_D_RM + "T00:00:00.000Z"} )
+                //        .set("count", 1)
+                //        .save()                        
+                //    });
 
                 // 共有サービスにデータを登録
                 SharedData.set(data);
@@ -327,32 +344,6 @@
                 return $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + src);
                 //return $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
             };
-            
-            //$scope.url_t = $sce.trustAsResourceUrl('https://www.angularjs.org');
-            //$scope.changeIt = function () {
-            //    $scope.url_t = $sce.trustAsResourceUrl('https://docs.angularjs.org/tutorial');
-            //}
-            
-            //$scope.projects = {
-            //    1 : {
-            //            "id" : 1,
-            //            "name" : "Mela Sarkar",
-            //            "url" : "http://blabla.com",
-            //            "description" : "A professional portfolio site for McGill University professor Mela Sarkar."
-            //        },
-
-            //    2 : {
-            //            "id" : 2,
-            //            "name" : "Good Watching",
-            //            "url" : "http://goodwatching.com",
-            //            "description" : "Weekend experiment to help my mom decide what to watch."    
-            //        }
-            //};
-            
-            //$scope.setProject = function (id) {
-            //    $scope.currentProject = $scope.projects[id];
-            //    $scope.currentProjectUrl = $sce.trustAsResourceUrl($scope.currentProject.url);
-            //}
         })
 
         //動画再生ページのコントローラ
@@ -378,6 +369,7 @@
         })
         
 
+
         // 週間ランキングのコントローラ
         app.controller('WRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
            $scope.catdata = [];
@@ -390,34 +382,86 @@
             }, 300);
            //↓↓↓-----------------------------------
             $scope.dataList = [];
-            var getDataCount = 50; // 1回に取得するデータの数
+            var getDataCount = 1000; // 1回に取得するデータの数
             var allDataCount; // 登録してあるデータの総数
             var fetchTimes; // データベースに通信する回数
             var completedTimes = 0; // 2回目以降で通信完了した回数
             var appendData = []; // 2回目以降のデータの仮格納場所
             
             var jikan2= new Date();
-            var jikan_Y2 = jikan2.getFullYear();
-            var jikan_M2 = jikan2.getMonth() + 1;
-            var jikan_D2 = jikan2.getDate();
             
-            var jikan_Y3 = jikan2.getFullYear();
-            var jikan_M3 = jikan2.getMonth() + 1;
-            var jikan_D3 = jikan2.getDate() - 7;
+            var st_jikan2 = new Date();
+            var end_jikan2 = new Date();
+            st_jikan2.setDate(st_jikan2.getDate() - 7)
+            end_jikan2.setDate(end_jikan2.getDate())
+            //console.log("st_jikan2 " +  st_jikan2.getFullYear() + ":" + st_jikan2.getMonth() + ":" + st_jikan2.getDate())
+            //console.log("end_jikan2 " +  end_jikan2.getFullYear() + ":" + end_jikan2.getMonth() + ":" + end_jikan2.getDate())
+            
+            var jikan_Y2 = end_jikan2.getFullYear();
+            var jikan_M2 = end_jikan2.getMonth() + 1;
+            var jikan_D2 = end_jikan2.getDate();
+            
+            var jikan_Y3 = st_jikan2.getFullYear();
+            var jikan_M3 = st_jikan2.getMonth() + 1;
+            var jikan_D3 = st_jikan2.getDate();
+
             
             
             // データ取得
             tblMvLog.order('count', true)
-                //.count().order("count", true)
                 .lessThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y2 + "-" + jikan_M2 + "-" + jikan_D2 + "T00:00:00.000Z"} )
                 .greaterThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y3 + "-" + jikan_M3 + "-" + jikan_D3 + "T00:00:00.000Z"} )
-                .limit(getDataCount)
+                //.limit(getDataCount)
                 .fetchAll()
                 .then(function(results) {
-                    // 1回目分のデータを格納
+                    
+                    var new_jikan = new Date();
+                    new_jikan.setDate(new_jikan.getDate() - 14)
+                    angular.forEach(results, function(value,index,ary){
+                        if (Date.parse(value.d_createDate) > new_jikan ){
+                             value.new = 1
+                        }
+                        
+                    })
+                    
+                    
+                    var ls = [];
+                    
+                    for(key in results){
+                        ls.push({"name" : results[key].name , "d_id" : results[key].d_id , "rankW_count" : 0 , "createDate" : results[key].createDate , "new" : results[key].new  });
+                    }
+                    
+                    var lskey = [];
+                    for(key in results){
+                        lskey.push(results[key].d_id)
+                    }
+                    
+                    for(var k = 0; k < results.length; k++){
+                        var d_search = results[k].d_id;
+                        var d_index = lskey.indexOf(d_search);
+                        ls[d_index].rankW_count = ls[d_index].rankW_count + 1;
+                    }
+                        
+                    
+                    ////チェック用
+                    //for(var l = 0; l < ls.length; l++){
+                    //    console.log(ls[l].name  + ":" + ls[l].rankW_count)
+                    //}
+                    
+                    var ls_b = [];
+                    for(var i = 0; i < ls.length; i++){
+                        if(ls[i].rankW_count > 0){
+                            ls_b.push({"name" : ls[i].name , "d_id" : ls[i].d_id , "rankW_count" : ls[i].rankW_count , "createDate" : ls[i].createDate , "new" : ls[i].new  });                            
+                        }
+                    }
+                    
+                    //r_test = [{"rankM_count":2 , "name":"test" , "d_id":"suXutgjs2DA"},{"rankM_count":1 , "name":"1" , "d_id":"suXutgjs2DA"}]
+                    
+                    //// 1回目分のデータを格納
                     $timeout(function() {
-                        $scope.dataList = results;
+                        $scope.dataList = ls_b;
                     });
+
                  }).catch(function(err) {
                     console.log(err);
                 });
@@ -431,32 +475,46 @@
                 var jikan_M = jikan.getMonth() + 1;
                 var jikan_D = jikan.getDate();
                 
-                tblMvLog.equalTo("name", data.name)
-                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
-                    .fetch()
-                    .then(function(results) {
-                        results.setIncrement("count", 1 )
-                        return results.update();})
-                    .catch(function(err){
-                        //alert(err)
-                        var MvLog = new tblMvLog();
-                        MvLog.set("name", data.name)
-                        .set("d_id",data.d_id)
-                        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
-                        .set("count", 1)
-                        .save()                        
-                    });
-//                
-//                
-//                //// 共有サービスにデータを登録
-//                //SharedData.set(data);
-//                
-//                //再生画面を表示
+                //tblMvLog.equalTo("name", data.name)
+                //    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //    .fetch()
+                //    .then(function(results) {
+                //        results.setIncrement("count", 1 )
+                //        return results.update();})
+                //    .catch(function(err){
+                //        //alert(err)
+                //        var MvLog = new tblMvLog();
+                //        MvLog.set("name", data.name)
+                //        .set("d_id",data.d_id)
+                //        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //        .set("count", 1)
+                //        .set("d_createDate", data.createDate)
+                //        .save()                        
+                //    });
+                    
+                var MvLog = new tblMvLog();
+                MvLog.set("name", data.name)
+                    .set("d_id",data.d_id)
+                    .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                    .set("count", 1)
+                    .set("d_createDate", data.createDate)
+                    .save()     
+
+                //再生画面を表示
                 window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
+                //window.open("https://www.youtube.com/watch?v="+data.d_id, "_blank", "location=yes")
+                //window.open("https://youtu.be/"+data.d_id, "_blank", "location=yes")
+                
+                //Https://youtu.be/
+                //https://www.youtube.com/watch?v=
             }    
         });
 
-        // 月間ランキングのコントローラ
+        // 
+
+
+
+        //月間ランキング
         app.controller('MRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
            $scope.catdata = [];
            var update = function() {
@@ -468,34 +526,85 @@
             }, 300);
            //↓↓↓-----------------------------------
             $scope.dataList = [];
-            var getDataCount = 50; // 1回に取得するデータの数
+            var getDataCount = 30; // 1回に取得するデータの数
             var allDataCount; // 登録してあるデータの総数
             var fetchTimes; // データベースに通信する回数
             var completedTimes = 0; // 2回目以降で通信完了した回数
             var appendData = []; // 2回目以降のデータの仮格納場所
             
             var jikan2= new Date();
-            var jikan_Y2 = jikan2.getFullYear();
-            var jikan_M2 = jikan2.getMonth() + 1;
-            var jikan_D2 = jikan2.getDate();
             
-            var jikan_Y3 = jikan2.getFullYear();
-            var jikan_M3 = jikan2.getMonth();
-            var jikan_D3 = jikan2.getDate();
+            var st_jikan2 = new Date();
+            var end_jikan2 = new Date();
+            st_jikan2.setDate(st_jikan2.getDate() - 30)
+            end_jikan2.setDate(end_jikan2.getDate())
+            //console.log("st_jikan2 " +  st_jikan2.getFullYear() + ":" + st_jikan2.getMonth() + ":" + st_jikan2.getDate())
+            //console.log("end_jikan2 " +  end_jikan2.getFullYear() + ":" + end_jikan2.getMonth() + ":" + end_jikan2.getDate())
             
+            var jikan_Y2 = end_jikan2.getFullYear();
+            var jikan_M2 = end_jikan2.getMonth() + 1;
+            var jikan_D2 = end_jikan2.getDate();
             
+            var jikan_Y3 = st_jikan2.getFullYear();
+            var jikan_M3 = st_jikan2.getMonth() + 1;
+            var jikan_D3 = st_jikan2.getDate();
+            
+                
             // データ取得
             tblMvLog.order('count', true)
-                //.count().order("count", true)
                 .lessThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y2 + "-" + jikan_M2 + "-" + jikan_D2 + "T00:00:00.000Z"} )
                 .greaterThanOrEqualTo("date",{"__type": "Date", "iso": jikan_Y3 + "-" + jikan_M3 + "-" + jikan_D3 + "T00:00:00.000Z"} )
-                .limit(getDataCount)
+                //.limit(getDataCount)
                 .fetchAll()
                 .then(function(results) {
-                    // 1回目分のデータを格納
+                    
+                    var new_jikan = new Date();
+                    new_jikan.setDate(new_jikan.getDate() - 14)
+                    angular.forEach(results, function(value,index,ary){
+                        if (Date.parse(value.d_createDate) > new_jikan ){
+                             value.new = 1
+                        }
+                        
+                    })
+                    
+                    
+                    var ls = [];
+                    
+                    for(key in results){
+                        ls.push({"name" : results[key].name , "d_id" : results[key].d_id , "rankM_count" : 0 , "createDate" : results[key].createDate , "new" : results[key].new  });
+                    }
+                    
+                    var lskey = [];
+                    for(key in results){
+                        lskey.push(results[key].d_id)
+                    }
+                    
+                    for(var k = 0; k < results.length; k++){
+                        var d_search = results[k].d_id;
+                        var d_index = lskey.indexOf(d_search);
+                        ls[d_index].rankM_count = ls[d_index].rankM_count + 1;
+                    }
+                        
+                    
+                    //チェック用
+                    //for(var l = 0; l < ls.length; l++){
+                    //    console.log(ls[l].name  + ":" + ls[l].rankM_count)
+                    //}
+                    
+                    var ls_b = [];
+                    for(var i = 0; i < ls.length; i++){
+                        if(ls[i].rankM_count > 0){
+                            ls_b.push({"name" : ls[i].name , "d_id" : ls[i].d_id , "rankM_count" : ls[i].rankM_count , "createDate" : ls[i].createDate , "new" : ls[i].new  });                            
+                        }
+                    }
+                    
+                    //r_test = [{"rankM_count":2 , "name":"test" , "d_id":"suXutgjs2DA"},{"rankM_count":1 , "name":"1" , "d_id":"suXutgjs2DA"}]
+                    
+                    //// 1回目分のデータを格納
                     $timeout(function() {
-                        $scope.dataList = results;
+                        $scope.dataList = ls_b;
                     });
+
                  }).catch(function(err) {
                     console.log(err);
                 });
@@ -511,30 +620,36 @@
                 var jikan_M = jikan.getMonth() + 1;
                 var jikan_D = jikan.getDate();
                 
-                tblMvLog.equalTo("name", data.name)
-                    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
-                    .fetch()
-                    .then(function(results) {
-                        results.setIncrement("count", 1 )
-                        return results.update();})
-                    .catch(function(err){
-                        //alert(err)
+                //tblMvLog.equalTo("name", data.name)
+                //    .equalTo("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //    .fetch()
+                //    .then(function(results){
+                //        results.setIncrement("count", 1 )
+                //        return results.update();})
+                //    .catch(function(err){
+                //        var MvLog = new tblMvLog();
+                //        MvLog.set("name", data.name)
+                //        .set("d_id",data.d_id)
+                //        .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
+                //        .set("count", 1)
+                //        .set("d_createDate", data.createDate)
+                //        .save()                        
+                //    });
+                    
                         var MvLog = new tblMvLog();
                         MvLog.set("name", data.name)
                         .set("d_id",data.d_id)
                         .set("date",{"__type": "Date", "iso": jikan_Y + "-" + jikan_M + "-" + jikan_D + "T00:00:00.000Z"} )
                         .set("count", 1)
-                        .save()                        
-                    });
-                
-                
-                //// 共有サービスにデータを登録
-                //SharedData.set(data);
+                        .set("d_createDate", data.createDate)
+                        .save()   
                 
                 //再生画面を表示
                 window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
             }    
         });
+        
+//■■■■■■■■■■■■
 
 
     </script>

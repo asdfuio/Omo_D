@@ -3,24 +3,27 @@
 <ons-toolbar>
     <div class="center">月間ランキング</div>
 </ons-toolbar>
-
 <div style="text-align: center">
 
         <ons-list>
-            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-list-item class="item" ng-repeat="data in dataList | orderBy:'-rankM_count' | limitTo:30 " ng-click="showDetailPage(data)">
             <ons-row class="relative">
                 <ons-col width="25px">
                     <div >
                         <img ng-if="$index == 0" src="img/1.jpg" width="24px"/>
                         <img ng-if="$index == 1" src="img/2.jpg" width="24px"/>
                         <img ng-if="$index == 2" src="img/3.jpg" width="24px"/>
-                        <img ng-if="$index == 2" src="img/new.jpg" class="absolute"/>
-                        <img ng-if="$index == 3" src="img/new.jpg" class="absolute"/>
+                    </div>
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute"/>
+                        </div>
                     </div>
                 </ons-col>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <!-- <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/> -->
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -31,6 +34,38 @@
         </ons-list>
 
 
+    <!-- 
+    --------------------------------------------------------------------------------------------------------
+        <ons-list>
+            <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
+            <ons-row class="relative">
+                <ons-col width="25px">
+                    <div >
+                            <div ng-switch = "tes2">
+                                <div ng-switch-when = {{tes2}}>
+                                 1
+                                </div>
+                                <div ng-switch-default>    
+                                        {{data.date}}
+                                        {{tes}}
+                                </div>
+                            </div>                        
+                    </div>
+                </ons-col>
+                <ons-col width="80px">
+                    <div >
+                        <!-- <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/> -->
+                    </div>
+                </ons-col>
+                <ons-col>
+                    
+                </ons-col>
+            </ons-row>
+            </ons-list-item>
+        </ons-list>
+    --------------------------------------------------------------------------------------------------------
+     -->
+     
 </div>
 
 </ons-page>

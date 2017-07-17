@@ -5,13 +5,15 @@
 
 <ons-template id="page1.html">
   <ons-page>
-    <ons-toolbar class="title">
+    <ons-toolbar style="height: 50px;">
+    <!-- style="height: 110px;" fixed-style <ons-toolbar class="title">--> 
       <div class="left">
         <ons-toolbar-button ng-click="menu.toggleMenu()">
           <ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em;"></ons-icon>
         </ons-toolbar-button>
       </div>
-      <div class="center">{{catdata.cat_name}}</div>
+          <div class="center">{{catdata.cat_name}}</div>
+    
     </ons-toolbar>
          
      <!-- 
@@ -24,10 +26,15 @@
         <div ng-switch-when="(未選択)">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -40,10 +47,15 @@
         <div ng-switch-when="子供">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kodomo :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -56,10 +68,15 @@
         <div ng-switch-when="動物">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Doubutu :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -72,10 +89,15 @@
         <div ng-switch-when="海外">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Kaigai :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -88,10 +110,15 @@
         <div ng-switch-when="アニメ">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Anime :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -104,10 +131,15 @@
         <div ng-switch-when="ゲーム">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Game :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -120,10 +152,15 @@
         <div ng-switch-when="漫画">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Manga :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -136,10 +173,15 @@
         <div ng-switch-when="スポーツ">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Sports :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -152,10 +194,15 @@
         <div ng-switch-when="ハプニング">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Happening :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -168,10 +215,15 @@
         <div ng-switch-when="ギャグ">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Gyagu :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -184,10 +236,15 @@
         <div ng-switch-when="セクシー">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Sexy :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -200,10 +257,15 @@
         <div ng-switch-when="衝撃">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Shogeki :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -216,10 +278,15 @@
         <div ng-switch-when="驚き">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Odoroki :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -232,10 +299,15 @@
         <div ng-switch-when="爆笑">
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | filter: {ct_Bakusyou :'1'}" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
@@ -248,10 +320,15 @@
         <div ng-switch-default>
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList" ng-click="showDetailPage(data)">
-            <ons-row>
+            <ons-row class="relative">
+                    <div ng-switch = "data.new">
+                        <div ng-switch-when="1">
+                            <img src="img/new.jpg" class="absolute_cat"/>
+                        </div>
+                    </div>
                 <ons-col width="80px">
                     <div class="item__thum">
-                        <img src="http://i.ytimg.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
+                        <img src="http://img.youtube.com/vi/{{data.d_id}}/default.jpg" width="70" height="50"/>
                     </div>
                 </ons-col>
                 <ons-col>
