@@ -3,6 +3,16 @@
     line-height: 1;
 }
 
+.item_cat{
+    padding: 15px;
+    line-height: 1.5;
+}
+
+.item_cat_menu{
+    padding-top: 29px;
+    line-height: 1.3;
+}
+
 .item__thum{
     background-color: #ccc;
     width: 70px;
@@ -28,7 +38,8 @@
 }
 
 .navigation-bar--title {
-    height: 90px;    
+    height: 50px;    
+    padding-top: 14px ;
     /*
         background:url('http://placehold.jp/150x50.png') no-repeat center center;
     */
