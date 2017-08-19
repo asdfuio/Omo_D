@@ -202,7 +202,6 @@
                 //        .set("count", 1)
                 //        .save()                        
                 //    });
-
                 // 共有サービスにデータを登録
                 SharedData.set(data);
                 
@@ -225,9 +224,7 @@
                 // 共有サービスにデータを登録
                 SelectedCat.set(data);    
                 //alert(data.cat_name);
-
             }    
-
         });
         
         
@@ -345,7 +342,6 @@
                 //return $sce.trustAsResourceUrl('https://www.youtube.com/embed/');
             };
         })
-
         //動画再生ページのコントローラ
         app.controller('DetailController2', function($scope, $sce, SharedData) {
             $scope.projects = {
@@ -368,8 +364,6 @@
             }
         })
         
-
-
         // 週間ランキングのコントローラ
         app.controller('WRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
            $scope.catdata = [];
@@ -404,7 +398,6 @@
             var jikan_Y3 = st_jikan2.getFullYear();
             var jikan_M3 = st_jikan2.getMonth() + 1;
             var jikan_D3 = st_jikan2.getDate();
-
             
             
             // データ取得
@@ -461,11 +454,9 @@
                     $timeout(function() {
                         $scope.dataList = ls_b;
                     });
-
                  }).catch(function(err) {
                     console.log(err);
                 });
-
            //↑↑↑-----------------------------------
            
             $scope.showDetailPage = function(data){
@@ -499,7 +490,6 @@
                     .set("count", 1)
                     .set("d_createDate", data.createDate)
                     .save()     
-
                 //再生画面を表示
                 window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
                 //window.open("https://www.youtube.com/watch?v="+data.d_id, "_blank", "location=yes")
@@ -509,13 +499,10 @@
                 //https://www.youtube.com/watch?v=
             }    
         });
-
         // 
-
-
-
         //月間ランキング
         app.controller('MRankController', function($scope, $http, SharedData,SelectedCat,$timeout) {
+            //localStorage.removeItem('obj');
            $scope.catdata = [];
            var update = function() {
               $scope.catdata = SelectedCat.get();
@@ -529,7 +516,7 @@
             var getDataCount = 30; // 1回に取得するデータの数
             var allDataCount; // 登録してあるデータの総数
             var fetchTimes; // データベースに通信する回数
-            var completedTimes = 0; // 2回目以降で通信完了した回数
+            var completedTimes = 0; // 2回目以降で通信完了した回数\
             var appendData = []; // 2回目以降のデータの仮格納場所
             
             var jikan2= new Date();
@@ -594,21 +581,99 @@
                     var ls_b = [];
                     for(var i = 0; i < ls.length; i++){
                         if(ls[i].rankM_count > 0){
-                            ls_b.push({"name" : ls[i].name , "d_id" : ls[i].d_id , "rankM_count" : ls[i].rankM_count , "createDate" : ls[i].createDate , "new" : ls[i].new  });                            
+                            //ls_b.push({"name" : ls[i].name , "d_id" : ls[i].d_id , "rankM_count" : ls[i].rankM_count , "createDate" : ls[i].createDate , "new" : ls[i].new });
+                            ls_b.push({"name" : ls[i].name , "d_id" : ls[i].d_id , "rankM_count" : ls[i].rankM_count , "createDate" : ls[i].createDate , "new" : ls[i].new });
                         }
                     }
                     
+                //★0819 ADD ↓↓↓ 再生履歴を表示する
+                    
+                    var str = localStorage.getItem('obj');
+                    var obj = JSON.parse(str);
+                    
+                    var inObj = new Set();
+                    obj.forEach(function(b){
+                        if(!inObj.has(b.reki_id)){
+                            inObj.add(b.reki_id);
+                        }
+                    });
+                    
+                    var ls_c = [];
+                    for(var i = 0; i < ls_b.length; i ++) {
+                        var _name = ls_b[i].name;
+                        var _d_id = ls_b[i].d_id;
+                        var _rankM_count = ls_b[i].rankM_count;
+                        var _createDate = ls_b[i].createDate;
+                        var _new = ls_b[i].new;
+                        var _flg = "";
+                        
+                        if (inObj.has(_d_id)){
+                            _flg = "1"
+                        }
+                        
+                        ls_c.push({"name" : _name , "d_id" : _d_id , "rankM_count" : _rankM_count , "createDate" : _createDate , "new" : _new , "reki" : _flg });
+                    }
+                    
+                //★0819 ADD ↑↑↑
+                    
                     //r_test = [{"rankM_count":2 , "name":"test" , "d_id":"suXutgjs2DA"},{"rankM_count":1 , "name":"1" , "d_id":"suXutgjs2DA"}]
+                    //■■
+                    //$timeout(function() {
+                    //    var str = localStorage.getItem('obj');
+                    //    var obj = JSON.parse(str);
+                        //var lskey_obj = [];
+                        //for(key in obj){
+                        //    lskey_obj.push({"d_id" : obj[key].d_id , "reki" : "" });
+                        //}
+                        //$scope.reki_data = lskey_obj
+                        //$scope.reki_data = obj
+                    //});
+                    
+                    //var ls_reki = []
+                    //var flag;
+                    //ls_reki.push(obj[0]);
+                    //for(var i = 0; i < obj.length; i++){
+                    //    flag = true;
+                    //    for(var j = 0; j < ls_reki.length; j++){
+                    //        if(obj[i].d_id === ls_reki[j].d_id){
+                    //            flag = false;
+                    //            //alert(obj[i].d_id + "" + ls_reki[j].d_id)
+                    //        }
+                    //    }
+                    //    if(flag){
+                    //        ls_reki.push(obj[i]);
+                    //    }
+                    //};
+                    
+                    ////var ls_reki = Array.from(new Set(obj));
+                    //var ls_c = []
+                    ////ls_bループ
+                    //for(var i = 0; i < ls_b.length; i++){
+                    //    //objループ
+                    //    for(var j = 0; j < ls_reki.length; j++){
+                    //        //alert("ls_b:" + ls_b[i].d_id + "ls_reki:" + ls_reki[j].d_id)
+                    //        if(ls_b[i].d_id===ls_reki[j].d_id) {
+                    //            ls_c.push({"name" : ls_b[i].name , "d_id" : ls_b[i].d_id , "rankM_count" : ls_b[i].rankM_count , "createDate" : ls_b[i].createDate , "new" : ls_b[i].new , "reki" : "1" });
+                    //            //ループから抜ける
+                    //            //j = ls_reki.length
+                    //            break;
+                    //        }
+                    //        //ここまで残っていたら視聴履歴なしということ。"reki" : ""でls_cに追加
+                    //        ls_c.push({"name" : ls_b[i].name , "d_id" : ls_b[i].d_id , "rankM_count" : ls_b[i].rankM_count , "createDate" : ls_b[i].createDate , "new" : ls_b[i].new , "reki" : "" });
+                    //    }
+                    //}   
+                    //$scope.reki_data = ls_c;
+                    ////■■
+                    
                     
                     //// 1回目分のデータを格納
                     $timeout(function() {
-                        $scope.dataList = ls_b;
+                        $scope.dataList = ls_c;
+                        //$scope.dataList = ls_c;
                     });
-
                  }).catch(function(err) {
                     console.log(err);
                 });
-
            //↑↑↑-----------------------------------
            
             $scope.showDetailPage = function(data){
@@ -644,14 +709,36 @@
                         .set("d_createDate", data.createDate)
                         .save()   
                 
+                // ■■
+                $timeout(function() {
+                    var str = localStorage.getItem('obj');
+                    var obj = JSON.parse(str);
+                    if(!obj){
+                            //var syoki_rec = [
+                            //            {"reki_id": data.d_id,
+                            //            "reki_date": jikan_Y + "/" + jikan_M + "/" + jikan_D }];
+                            var syoki_rec = [{"reki_id": data.d_id}];
+                            localStorage.setItem('obj', JSON.stringify(syoki_rec));
+                        }else{
+                            var str2 = localStorage.getItem('obj');
+                            var obj2 = JSON.parse(str2);
+                            var adddata = [];
+                            //adddata= 
+                            //    {"reki_id": data.d_id,
+                            //    "reki_date": jikan_Y + "/" + jikan_M + "/" + jikan_D};
+                            adddata=  {"reki_id": data.d_id};
+                            obj2.push(adddata);
+                            localStorage.setItem('obj', JSON.stringify(obj2));
+                        }  
+                });
+                // ■■
+                
                 //再生画面を表示
                 window.open("https://www.youtube.com/embed/"+data.d_id, "_blank", "location=yes")
             }    
         });
         
 //■■■■■■■■■■■■
-
-
     </script>
 </head>
 <body>
@@ -672,7 +759,6 @@
         </ons-tabbar-item>
 
         <!--
-
         <ons-tabbar-item
             page="page2.html"
             active="true">

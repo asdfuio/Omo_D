@@ -4,6 +4,14 @@
     <div class="center">月間ランキング</div>
 </ons-toolbar>
 <div style="text-align: center">
+        
+        <!--
+        <ons-list>
+            <ons-list-item ng-repeat="reki in reki_data">
+                {{reki.d_id}}
+            </ons-list-item>
+        </ons-list>
+        -->
 
         <ons-list>
             <ons-list-item class="item" ng-repeat="data in dataList | orderBy:'-rankM_count' | limitTo:30 " ng-click="showDetailPage(data)">
@@ -13,12 +21,19 @@
                         <img ng-if="$index == 0" src="img/1.jpg" width="24px"/>
                         <img ng-if="$index == 1" src="img/2.jpg" width="24px"/>
                         <img ng-if="$index == 2" src="img/3.jpg" width="24px"/>
+                        <!--<img src="img/new.jpg" class="absolute_reki"/>-->
+                        
                     </div>
                     <div ng-switch = "data.new">
                         <div ng-switch-when="1">
                             <img src="img/new.jpg" class="absolute"/>
                         </div>
                     </div>
+                    <div ng-switch = "data.reki">
+                        <div ng-switch-when="1">
+                            <img src="img/reki.jpg" class="absolute_reki"/>
+                        </div>
+                    </div>　
                 </ons-col>
                 <ons-col width="80px">
                     <div class="item__thum">

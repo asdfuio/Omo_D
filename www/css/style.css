@@ -1,3 +1,15 @@
+.navigation-bar--title {
+    height: 50px;    
+    padding-top: 14px;
+    background-color: #E52164;
+    color: #ffffff;
+    border-color:  #ffffff;
+}
+
+.center{
+    color: #ffffff;
+}
+
 .item{
     padding: 15px;
     line-height: 1;
@@ -37,13 +49,9 @@
     
 }
 
-.navigation-bar--title {
-    height: 50px;    
-    padding-top: 14px ;
     /*
         background:url('http://placehold.jp/150x50.png') no-repeat center center;
     */
-}
 
 .toolbar__title{
     /*
@@ -67,6 +75,12 @@
     position: absolute;
     left: 26px;
     top: 1px;
+    width: 17px;
+    }
+.absolute_reki {
+    position: absolute;
+    left: 75px;
+    top: 35px;
     width: 17px;
     }
     
